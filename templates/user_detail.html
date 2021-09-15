@@ -4,8 +4,12 @@
 {% block content%}
 <img src=" {{user.img}}" alt="">
 <h1>{{user.first_name}} {{user.last_name}}</h1>
-<button id="edit_user">Edit</button>
-<button id="delete_user">Delete</button>
+<form action="/users/{{user.id}}/edit">
+    <button class="btn btn-primary" type= "submit" id="edit_user">Edit</button>
+</form>
+<form action="/users/{{user.id}}/delete" method="POST">
+    <button class="btn btn-danger" type= "submit" id="delete_user">Delete</button>
+</form>
 
 <!-- <ul>
     {% for user in users %}

@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
-{% block title %} Create New User {% endblock %}
+{% block title %} Edit A User {% endblock %}
 
 {% block content%}
-<h1>Create a User</h1>
+<h1>Edit a User</h1>
 
-<form action="/users">
+<form action="/users/{{user.id}}/edit" method= "POST">
     <div>
         <label for="first_name">First Name</label>
-        <input name= "first_name" type="text" placeholder="Enter a first name">
+        <input name= "first_name" type="text" placeholder="{{user.first_name}}">
     </div>
     <div>
         <label for="last_name">Last Name</label>
-        <input name= "last_name" type="text" placeholder="Enter a last name">
+        <input name= "last_name" type="text" placeholder="{{user.last_name}}">
     </div>
     <div>
         <label for="image_url">Image URL</label>
-        <input name= "image_url" type="url" placeholder="Enter an image URL for user">
+        <input name= "image_url" type="url" placeholder="{{user.img}}">
     </div>
-    <button type="submit" id="cancel_user_edit"class="btn btn-primary">Cancel</button>
-    <button type="submit" id="save_user_edit" class="btn btn-primary">Save</button>
+    <button class="btn btn-secondary" type="submit" id="cancel_user_edit"class="btn btn-primary">Cancel</button>
+    <button class="btn btn-success" type="submit" id="save_user_edit" class="btn btn-primary">Save</button>
 </form>
 
 {% endblock %}
