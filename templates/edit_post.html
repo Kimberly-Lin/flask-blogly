@@ -7,11 +7,11 @@
 <form action="/posts/{{post.id}}/edit" method= "POST">
     <div>
         <label for="title">Title</label>
-        <input name= "title" type="text" placeholder="{{post.title}}">
+        <input name= "title" type="text" value="{{post.title}}">
     </div>
     <div>
         <label for="post_content">Post Content</label>
-        <input name= "post_content" type="text" placeholder="{{post.content}}">
+        <input name= "post_content" type="text" value="{{post.content}}">
     </div>
     
     <a href="/posts/{{post.id}}" class="btn btn-secondary">Cancel</a>

@@ -60,8 +60,7 @@ def create_user_from_form():
 def load_user_details_page(user_id):
     """load the user details for the selected user"""
     user = User.query.get(user_id)
-    posts= user.posts
-    return render_template("user_detail.html", user=user, posts=posts)
+    return render_template("user_detail.html", user=user)
 
 @app.get("/users/<int:user_id>/edit")
 def load_user_edit_info_page(user_id):
@@ -73,7 +72,6 @@ def load_user_edit_info_page(user_id):
 def submit_edit_form(user_id):
     """process the edit form and return user to /users page"""
     user= User.query.get(user_id)
-    breakpoint()
 
     if (request.form["first_name"]):
         user.first_name = request.form["first_name"]
@@ -123,7 +121,33 @@ def add_post(user_id):
 def show_post(post_id):
     """Show post details"""
     post = Post.query.get(post_id)
-    user = post.user
-
-    return render_template("post_detail.html", post=post, user=user)
+  
+    return render_template("post_detail.html", post=post)
     
+@app.get("/posts/<int:post_id>/edit")
+def show_edit_post_form(post_id):
+    """Show edit post form"""
+    post = Post.query.get(post_id)
+    return render_template("edit_post.html", post=post)
+
+@app.post("/posts/<int:post_id>/edit")
+def submit_edit_post(post_id):
+    """process the edit form and return user to /users page"""
+    post = Post.query.get(post_id)
+    
+    post.title = request.form["title"]
+    post.content = request.form["post_content"]
+
+    db.session.commit()
+    return redirect(f"/posts/{post_id}")
+
+
+@app.post("/posts/<int:post_id>/delete")
+def delete_post(post_id):
+    """Delete post from database, redirect back to posts page"""
+    post = Post.query.get(post_id)
+    user_id = post.user_id
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
