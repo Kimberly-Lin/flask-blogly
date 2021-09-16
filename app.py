@@ -60,7 +60,7 @@ def create_user_from_form():
 def load_user_details_page(user_id):
     """load the user details for the selected user"""
     user = User.query.get(user_id)
-    posts = user.posts
+    posts= user.posts
     return render_template("user_detail.html", user=user, posts=posts)
 
 @app.get("/users/<int:user_id>/edit")
