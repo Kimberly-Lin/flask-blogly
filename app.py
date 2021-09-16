@@ -59,7 +59,8 @@ def create_user_from_form():
 def load_user_details_page(user_id):
     """load the user details for the selected user"""
     user = User.query.get(user_id)
-    return render_template("user_detail.html", user=user)
+    posts = user.posts
+    return render_template("user_detail.html", user=user, posts=posts)
 
 @app.get("/users/<int:user_id>/edit")
 def load_user_edit_info_page(user_id):
@@ -89,7 +90,6 @@ def submit_edit_form(user_id):
 @app.post("/users/<int:user_id>/delete")
 def delete_user(user_id):
     """Delete user from database, rediret back to users page"""
-
     user=User.query.get(user_id)
 
     db.session.delete(user)

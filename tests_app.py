@@ -15,16 +15,17 @@ db.create_all()
 class BlogTests(TestCase):
     def setUp(self):
         """Stuff to do before every test."""
+        User.query.delete()
         self.client = app.test_client()
         test_user = User(first_name='Davis',last_name='Test',img='')
         db.session.add(test_user)
         db.session.commit()
-        self.test_user_id = test_user.id
+        self.test_user_id = test_user.id        
+
 
     def tearDown(self):
         """Stuff to do after every test."""
-        User.query.delete()
-
+        db.session.rollback()
 
     def test_homepage_redirect(self):
         """Ensure landing on home page redirects to users list"""
@@ -48,7 +49,7 @@ class BlogTests(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('FirstTest LastTest', html)
 
-    def invalid_create_user_input(self):
+    def test_invalid_create_user_input(self):
         with self.client as client:
             resp = client.post('/users/new',
                             data={'first_name': 'FirstTest',
@@ -61,9 +62,9 @@ class BlogTests(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Please enter a first and last name', html)
 
-    def delete_user(self):
+    def test_delete_user(self):
         with self.client as client:
-            resp = client.post('/users/{self.test_user_id}/delete',
+            resp = client.post(f'/users/{self.test_user_id}/delete',
                                   follow_redirects=True)
             html = resp.get_data(as_text=True)
 
