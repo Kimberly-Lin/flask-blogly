@@ -89,8 +89,11 @@ def submit_edit_form(user_id):
 @app.post("/users/<int:user_id>/delete")
 def delete_user(user_id):
     """Delete user from database, rediret back to users page"""
-    user=User.query.get(user_id)
-
+    user = User.query.get(user_id)
+    user_posts = user.posts
+    
+    for post in user_posts:
+        db.session.delete(post)
     db.session.delete(user)
     db.session.commit()
 
@@ -136,7 +139,7 @@ def submit_edit_post(post_id):
     post = Post.query.get(post_id)
     
     post.title = request.form["title"]
-    post.content = request.form["post_content"]
+    post.content = request.form["content"]
 
     db.session.commit()
     return redirect(f"/posts/{post_id}")
