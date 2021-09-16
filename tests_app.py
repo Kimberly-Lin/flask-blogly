@@ -4,6 +4,7 @@ from models import db, connect_db, User
 
 app.config["TESTING"] = True
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
+app.config['SQLALCHEMY_ECHO'] = False
 
 #create DB blogly test and populate
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
@@ -46,3 +47,26 @@ class BlogTests(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('FirstTest LastTest', html)
+
+    def invalid_create_user_input(self):
+        with self.client as client:
+            resp = client.post('/users/new',
+                            data={'first_name': 'FirstTest',
+                                  'last_name': '',
+                                  'image_url': ''  },
+                                  follow_redirects=True
+                                  )
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Please enter a first and last name', html)
+
+    def delete_user(self):
+        with self.client as client:
+            resp = client.post('/users/{self.test_user_id}/delete',
+                                  follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('<h1>Users</h1>', html)
+            self.assertNotIn('Davis Test', html)
