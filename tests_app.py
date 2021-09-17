@@ -21,12 +21,17 @@ class BlogTests(TestCase):
         User.query.delete()
         self.client = app.test_client()
         test_user = User(first_name='Davis',last_name='Test',img='')
-        test_post = Post(title='Test Title',
-                        content='Test content',
-                        created_at=datetime.datetime.now(), 
-                        user_id = test_user.id)
+        test_user2 = User(first_name='Kim',last_name='Test',img='')
 
         db.session.add(test_user)
+        db.session.add(test_user2)
+
+        db.session.commit()
+
+        test_post = Post(title='Test Title',
+                        content='Test content',
+                        user_id = test_user.id)
+
         db.session.add(test_post)
 
         db.session.commit()
@@ -81,7 +86,7 @@ class BlogTests(TestCase):
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('<h1>Users</h1>', html)
+            self.assertIn('Kim Test', html)
             self.assertNotIn('Davis Test', html)
 
     def test_create_post(self):

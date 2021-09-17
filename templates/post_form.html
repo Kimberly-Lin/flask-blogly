@@ -7,11 +7,12 @@
 <form action="/users/{{user.id}}/posts/new" method= "POST">
     <div>
         <label for="title">Title</label>
-        <input name= "title" type="text">
+        <input id="title" name= "title" type="text">
+        <!-- Good to have input id be same as label or put input in label for accessibility -->
     </div>
     <div>
         <label for="content">Content</label>
-        <input name= "content" type="text">
+        <input id="content" name= "content" type="text">
     </div>
     
     <a href="/user/{{user.id}}" class = "btn btn-secondary">Cancel</a>
